@@ -30,7 +30,11 @@ Note: Please watch [this youtube video](https://www.youtube.com/watch?v=CML6vfKj
 1. Clone your forked repository. You can simply do it by clicking on `Code` and copying the HTTPS URL.
 2. Now simply clone the repo on your PC. Command will be like `git clone [URL]` where URL is the one, you got from step 1.
 
-### 3. Create a New Branch
+### 3. Synchronize the main branch
+1. Run `git status` and make sure you are on the main branch.
+2. Run `git pull` to make sure the upstream origin/main has the same state as downstream main branch.
+
+### 4. Create a New Branch
 Before implementing anything, make sure you are on a new branch.
 
 You can create a new branch and switch to it by running:
@@ -45,3 +49,28 @@ For Example:
 git checkout -b feature/86ermm50c-generate-pattern
 ```
 
+Note: Remember, this will make a copy of the branch we were on before we ran this command. In our case, this `86ermm50c-generate-pattern` branch will be a copy of `main` branch.
+
+### 5. Do the work needed
+Now, simply start working on the code changes or any other changes related to the project.
+
+### 6. Push the changes to github
+Run `git status` -> `git add *` -> `git commit -m "a message"` -> `git push`. 
+If we are pushing the new branch for the first time, git will show a command to create an `upstream` branch. Run that command.
+
+### 7. If needed make more changes
+We can still keep updating the project files and once the application is working, we can again do:
+
+`git status` -> `git add *` -> `git commit -m "a message"` -> `git push`
+
+### 8. Create a PR (Pull Request)
+Once the work is done and pushed, we can goto github and create a `Pull Request` for our branch `86ermm50c-generate-pattern`
+
+### 9. Get it approved
+Request the team members to review the code and give you approvals
+
+### 10. Merge the changes back to the main branch
+Once we get 3 approvals, we can simply select `Squash` as a merge strategy and then click the `Merge` button on github.
+
+### 11. We are done
+Now, for a new task, we can simply repeat steps from (4) to (10) and keep doing this.

@@ -1,0 +1,1 @@
+print("ramadan mubark all ")

@@ -18,7 +18,7 @@ Before you begin, ensure you have the following installed on your machine:
 
 ## Getting Started
 
-### 1. Fork the Repository
+### 1. Fork the Repository (DON'T DO IT IF YOU ARE A COLLABORATOR)
 
 1. Go to the original repository: [Link of Repo](https://github.com/CodelineAtyab/SpendWise)
 2. Click the `Fork` button on the top right to create your own copy of the repository.

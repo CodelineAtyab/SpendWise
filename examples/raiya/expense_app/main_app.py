@@ -1,7 +1,7 @@
 from store_expense import add_expense
 from read_expenses import view_expenses 
 from store_expense import update_expense
-from read_expenses import delete_expense
+from delete_expense import delete_expense
 import datetime
 
 def main():

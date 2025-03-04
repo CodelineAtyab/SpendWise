@@ -9,19 +9,19 @@ def main():
 
     while True:
         choice = input("Enter your choice: ")
-        if choice == "1":
-           
-                amount = float(input("Enter the amount:"))
-                crr = input("Enter the currency:")
-                email = input("Enter your email:")
-                add(amount, crr, email)
-           
+        if choice == "1":          
+            amount = float(input("Enter the amount:"))
+            crr = input("Enter the currency:")
+            email = input("Enter your email:")
+            add(amount, crr, email)    
         elif choice == "2":
             view()
         elif choice == "3":
-            update()
+            email = input("Enter the email of the customer you want to update: ")
+            update(email)  
         elif choice == "4":
-            delete()        
+            email = input("Enter the email of the customer you want to delete: ")
+            delete(email)  
         elif choice == "5":
             break
         else:

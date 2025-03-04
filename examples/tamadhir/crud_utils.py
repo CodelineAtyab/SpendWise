@@ -20,35 +20,41 @@ def view():
         print("No information available.")
     print("")
 
-def update():
-    email = input("Enter the email of the customer you want to update: ")
+def update(email):
     if email in cus_info:
         print(f"Current records for {email}: {cus_info[email]}")
+    
         record_index = int(input(f"Enter the record number to update (1 to {len(cus_info[email])}): ")) - 1
         if 0 <= record_index < len(cus_info[email]):
                 new_expense = float(input("Enter the new amount: "))
                 new_currency = input("Enter the new currency: ")
-                cus_info[email][record_index]['expense'] = new_expense
-                cus_info[email][record_index]['currency'] = new_currency
                 sys_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                cus_info[email][record_index]['time'] = sys_time
+                cus_info[email][record_index] = {
+                    'expense': new_expense,
+                    'currency': new_currency,
+                    'email': email,
+                    'time': sys_time
+                }
                 print(f"Information updated for {email}, record {record_index + 1}.")
         else:
-            print("Invalid record number!")
-    else:
+                print("Invalid record number!")
+        
         print("Email not found!")
     print("")
 
-def delete():
-    email = input("Enter the email of the customer you want to delete: ")
+def delete(email):
     if email in cus_info:
         print(f"Current records for {email}: {cus_info[email]}")
         record_index = int(input(f"Enter the record number to delete (1 to {len(cus_info[email])}): ")) - 1
         if 0 <= record_index < len(cus_info[email]):
-            del cus_info[email][record_index]
-            print(f"Record {record_index + 1} for {email} deleted successfully.")
+                confirmation = input(f"Are you sure you want to delete record {record_index + 1}? (yes/no): ").lower()
+                if confirmation == "yes":
+                    del cus_info[email][record_index]
+                    print(f"Record {record_index + 1} for {email} deleted successfully.")
+                else:
+                    print("Deletion canceled.")
         else:
-            print("Invalid record number!")
+                print("Invalid record number!")
     else:
         print("Email not found!")
     print("")

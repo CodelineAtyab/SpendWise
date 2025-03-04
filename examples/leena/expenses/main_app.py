@@ -28,8 +28,6 @@ def main():
         amount_list.append(int(input("Enter the amount: ")))
         amount_list.append(input("Enter the currency: "))
         amount_list.append(input("Enter the date dd/mm/yyyy: "))
-        loan_number = 1
-        amount_list.append(int(loan_number))
         update_expense(e_mail, amount_list)
     elif choice == "4":
         item_key = input("Enter the email of the expense to delete: ")

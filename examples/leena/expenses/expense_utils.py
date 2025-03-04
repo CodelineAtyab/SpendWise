@@ -13,7 +13,7 @@ def add(email, amount_list):
         number_of_loans = _expense_data_list[email][3] + 1
         _expense_data_list[email] = [new_amount, amount_list[1], amount_list[2], number_of_loans]
     else:
-        amount_list.append(1)  # Initialize the number of loans to 1
+        amount_list.append(1)
         _expense_data_list[email] = amount_list
     return True
 

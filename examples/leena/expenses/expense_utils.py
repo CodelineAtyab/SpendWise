@@ -9,11 +9,16 @@ def add(email, amount_list):
     _expense_data_list[email] = amount_list
     return True
 
-def remove(item_id):
-    if item_id in _expense_data_list:
-        del _expense_data_list[item_id]
+def delete(item_key):
+    if item_key in _expense_data_list:
+        del _expense_data_list[item_key]
         return True
     return False
 
 def get_all():
     return _expense_data_list
+
+def update(email, amount_list):
+    _expense_data_list[email] = amount_list
+    return True
+    

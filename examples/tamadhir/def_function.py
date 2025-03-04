@@ -52,13 +52,13 @@ def main():
     while True:
         choice = input("Enter your choice: ")
         if choice == "1":
-            try:
+            while True:
                 amount = float(input("Enter the amount:"))
                 crr = input("Enter the currency:")
                 email = input("Enter your email:")
                 add(amount, crr, email)
-            except ValueError:
-                print("Invalid input for the amount. Please enter a valid number.")
+                break
+           
         elif choice == "2":
             view()
         elif choice == "3":

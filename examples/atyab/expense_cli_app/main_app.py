@@ -1,27 +1,25 @@
-from store_expense import add_expense
-from read_expenses import view_expenses
-
-def main():
-  print("SpendWise CLI")
-  print("=============")
-  print("1. Add an expense")
-  print("2. View expenses")
-  print("3. Exit")
-
-  choice = input("Enter your choice: ")
-  if choice == "1":
-    expense_amount = float(input("Enter expense amount: "))
-    add_expense(expense_amount)
-  elif choice == "2":
-    view_expenses()
-  elif choice == "3":
-    return
-  else:
-    print("Invalid choice. Please try again.")
-  
-  main()
-
-
-if __name__ == "__main__":
-  main()
-  print("Exiting CLI ...")
+import sys
+import traceback
+FILE_PATH = "./data_store.txt"
+if len(sys.argv) < 2:
+    print("Usage: python main_app.py <action> <amount:(Optional in case of read)>")
+    sys.exit(1)
+# Read the data from the file
+list_of_transactions: list[str] = []
+# Techinal Debt
+try:
+  with open(FILE_PATH, "r") as data_store_file:
+    list_of_transactions = [float(x.strip()) for x in data_store_file.readlines()]
+except Exception:
+   print(traceback.format_exc())
+# Action handler for action add-amount
+if sys.argv[1] == "add-amount":
+    try:
+      with open(FILE_PATH, "a") as data_store_file:
+        list_of_transactions.append(float(sys.argv[2]))
+        data_store_file.write(sys.argv[2] + "\n")
+        print("Amount added successfully!")
+    except Exception:
+      print(traceback.format_exc())
+elif sys.argv[1] == "view-amount":
+    print(list_of_transactions)

@@ -21,7 +21,7 @@ def main():
         if choice in ["1", "2", "3"]:
             email = input("Enter your email address: ").strip().lower()
             if "@" not in email or "." not in email or "com" not in email:
-                print("Invalid email. Please enter a valid email address with corect formating\nThank you: ")
+                print("Invalid email. Please enter a valid email address with corect formating\tThank you: ")
                 continue
 
         if choice == "1":

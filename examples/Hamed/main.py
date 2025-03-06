@@ -2,7 +2,7 @@ from expense_tracker import ExpenseTracker
 
 def main():
 
-    """The tracker use to..........  """
+    #The tracker is used to manage expenses. This script allows the user to create, view, update, or delete expenses.
 
     tracker = ExpenseTracker()
 
@@ -39,10 +39,10 @@ def main():
         elif choice == "3":
             tracker.view_expenses(email)
             try:
-                index = int(input("Enter the index of the expense to update: "))
+                email = int(input("Enter the index of the expense to update: "))
                 new_description = input("Enter new description: ")
                 new_amount = float(input("Enter new amount: "))
-                tracker.update_expense(email, index, new_description, new_amount)
+                tracker.update_expense(email, email, new_description, new_amount)
                 print("Expense updated successfully.")
             except ValueError:
                 print("Invalid input. Please enter a valid index and amount.")
@@ -50,10 +50,10 @@ def main():
         elif choice == "4":
             tracker.view_expenses(email)
             try:
-                index = int(input("Enter the index of the expense to delete: "))
-                confirm = input(f"Are you sure you want to delete expense {index}? (y/n): ").lower()
+                email = int(input("Enter the index of the expense to delete: "))
+                confirm = input(f"Are you sure you want to delete expense {email}? (y/n): ").lower()
                 if confirm == 'y':
-                    tracker.delete_expense(email, index)
+                    tracker.delete_expense(email, email)
                 else:
                     print("Deletion canceled.")
             except ValueError:

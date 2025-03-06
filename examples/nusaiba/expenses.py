@@ -1,6 +1,8 @@
 from store_expense import add_expense
 from read_expenses import view_expenses
 import expense_utils
+import datetime
+
 
 def main():
     print("SpendWise CLI")
@@ -16,7 +18,9 @@ def main():
     if choice == "1":
         expense_amount = float(input("Enter expense amount: "))
         expense_description = input("Enter expense description: ")
-        add_expense(expense_description, expense_amount)  # Pass both description and amount to add_expense
+        datetime = input("enter the the date : ")
+        datetime= input("enter the time : ")
+        add_expense(expense_description, expense_amount)  
 
     elif choice == "2":
         view_expenses()

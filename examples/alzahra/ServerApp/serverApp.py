@@ -12,13 +12,9 @@ app = FastAPI()
 class Amount(BaseModel):
     amount: float
 
-@app.get("/view-amount")
-def my_func():
-    return {"message": read_transactions}
-
-@app.get("/sum")
-def sum(num1, num2):
-  return {"result": add_amount(int(num1) + int(num2))}
+#@app.get("/add-amount")
+#def my_func():
+ #   return {"message":add_amount(15)}
 
 @app.get("/view-amount")
 def view_amount():
@@ -28,13 +24,15 @@ def view_amount():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/add-amount")
-def add_amount_route(amount: Amount):
+@app.get("/add-amount")
+def add_amount_query(amount: float):
+    """Adds an amount via a URL query parameter."""
     try:
-        result = add_amount(amount.amount)
+        result = add_amount(amount)  
         return {"message": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8888)

@@ -26,6 +26,13 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# Virtual environment
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
@@ -130,6 +137,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.env.*
 env/
 venv/
 ENV/
@@ -169,3 +177,9 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# VSCode directories
+.vscode/
+
+# JetBrains IDEs directories
+.idea/

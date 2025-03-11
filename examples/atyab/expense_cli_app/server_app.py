@@ -6,7 +6,8 @@ app = FastAPI()
 
 @app.get("/my_func")
 def my_func():
-  return {"message": "Hello, Team Abtal A-Digital!!!"}
+  return {"message": "Hello,This is comming from Alzahra, Team Abtal A-Digital!!!"}
+
 
 @app.get("/sum")
 def sum(num1, num2):

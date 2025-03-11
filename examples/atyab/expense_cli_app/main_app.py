@@ -1,6 +1,7 @@
 import sys
 import traceback
 
+
 FILE_PATH = "./data/data_store.txt"
 
 if len(sys.argv) < 2:

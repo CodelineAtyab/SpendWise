@@ -1,17 +1,24 @@
 import uvicorn
-
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-@app.get("/my_func")
-def my_func():
-  return {"message": "Hello,This is comming from Alzahra, Team Abtal A-Digital!!!"}
+# Enable CORS
+origins = ["*"]
+app.add_middleware(
+  CORSMiddleware,
+  allow_origins=origins,  # Allows all origins
+  allow_credentials=True,
+  allow_methods=["*"],
+  allow_headers=["*"],
+)
 
-
-@app.get("/sum")
-def sum(num1, num2):
-  return {"result": int(num1) + int(num2)}
+# Serve the index.html file located in the current directory
+@app.get("/home")
+def home():
+  return FileResponse("index.html")
 
 if __name__ == "__main__":
-  uvicorn.run(app, host="0.0.0.0", port=8888)
+  uvicorn.run(app, host="0.0.0.0", port=80)

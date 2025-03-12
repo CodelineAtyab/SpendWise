@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <title>Team Abtal A Digital</title>
   <style>
     body {
-      background-color: #69776a;
-      color: #dcddde;
+      background-color: #36393F;
+      color: #DCDDDE;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       margin: 20px;
     }
@@ -16,8 +17,8 @@
       margin-bottom: 20px;
     }
     .box {
-      background-color: #5c5f5b;
-      border: 1px solid #829186;
+      background-color: #2F3136;
+      border: 1px solid #202225;
       border-radius: 8px;
       padding: 20px;
       margin-bottom: 20px;
@@ -34,50 +35,40 @@
       position: absolute;
       top: 10px;
       right: 10px;
-      background-color: #a6aaa3;
+      background-color: #202225;
       padding: 5px 10px;
       border-radius: 4px;
       font-size: 0.9rem;
+    }
+    /* Styling for gender icons */
+    #genderIcon {
+      width: 30px;
+      height: 30px;
+      display: inline-block;
     }
   </style>
 </head>
 <body>
   <!-- Team name header -->
   <header class="center-header">
-    <h1>Digital Transformation Analsists Dashboard</h1>
+    <h1>  DIGITAL TRANSFORMATION TEAM MEMBERS DASHBOARD </h1>
   </header>
-  <!-- First full-row box with enter name, gender display, and get countries functionality -->
+  
   <div class="box" id="functionalityBox">
     <div id="nameForm">
       <input type="text" id="nameInput" placeholder="Enter name" />
       <button id="fetchButton">Who Am I</button>
     </div>
     <div id="resultsContainer" style="margin-top:20px; display:flex; flex-wrap: wrap; gap:10px;"></div>
-    <!-- Gender display container -->
+    <!-- Gender icon will be shown here -->
     <div id="genderDisplay"></div>
   </div>
-
   <script>
     document.getElementById('fetchButton').addEventListener('click', async () => {
       const name = document.getElementById('nameInput').value.trim();
       if (!name) return;
       try {
-        // Fetch gender information from the server
-        const genderResponse = await fetch(`/gender?name=${encodeURIComponent(name)}`);
-        const genderData = await genderResponse.json();
-        const genderDisplay = document.getElementById('genderDisplay');
-        genderDisplay.innerHTML = ''; // clear previous content
-
-        // Display gender icon
-        if (genderData.gender) {
-          const genderIcon = document.createElement('span');
-          genderIcon.textContent = genderData.gender === 'male' ? '♂️' : '♀️'; // Unicode characters for male and female
-          genderDisplay.appendChild(genderIcon);
-        } else {
-          genderDisplay.textContent = 'Unknown';
-        }
-
-        // Fetch nationalize information for countries
+        // Updated URL to call local server endpoint /country_origin instead of the external API
         const response = await fetch(`/country_origin?name=${encodeURIComponent(name)}`);
         const data = await response.json();
         const container = document.getElementById('resultsContainer');
@@ -85,14 +76,25 @@
         data.country.forEach((item, index) => {
           const box = document.createElement('div');
           box.style.padding = '10px';
-          box.style.border = '1px solid #dcddde';
+          box.style.border = '1px solid #DCDDDE';
           box.style.borderRadius = '5px';
-          box.style.backgroundColor = '#2f3136';
+          box.style.backgroundColor = '#2F3136';
           box.style.flex = '1 1 100%';
           box.style.textAlign = 'center';
           box.innerHTML = `<strong>${index + 1}</strong><br/><span>${item.country_name}</span>`;
           container.appendChild(box);
         });
+        // Now fetch gender based on the name
+        const genderResponse = await fetch(`/gender?name=${encodeURIComponent(name)}`);
+        const genderData = await genderResponse.json();
+// Display gender icon (male/female)
+const genderDisplay = document.getElementById('genderDisplay');
+genderDisplay.innerHTML = ''; // clear previous gender
+if (genderData.gender === 'male') {
+  genderDisplay.innerHTML = `<i class="fa-solid fa-mars-stroke-up" alt="Male"></i>`;  // Corrected icon tag
+} else if (genderData.gender === 'female') {
+  genderDisplay.innerHTML = `<i class="fa-solid fa-venus" alt="Female"></i>`;  // Corrected icon tag
+}
       } catch (err) {
         console.error(err);
       }

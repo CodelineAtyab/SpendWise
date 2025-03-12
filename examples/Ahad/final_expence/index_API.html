@@ -6,7 +6,7 @@
   <title>Team Abtal A Digital</title>
   <style>
     body {
-      background-color: #676952;
+      background-color: #69776a;
       color: #dcddde;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       margin: 20px;
@@ -16,8 +16,8 @@
       margin-bottom: 20px;
     }
     .box {
-      background-color: #63746c;
-      border: 1px solid #6c7179;
+      background-color: #5c5f5b;
+      border: 1px solid #829186;
       border-radius: 8px;
       padding: 20px;
       margin-bottom: 20px;
@@ -34,7 +34,7 @@
       position: absolute;
       top: 10px;
       right: 10px;
-      background-color: #6f7174;
+      background-color: #a6aaa3;
       padding: 5px 10px;
       border-radius: 4px;
       font-size: 0.9rem;
@@ -42,9 +42,9 @@
   </style>
 </head>
 <body>
-  
+  <!-- Team name header -->
   <header class="center-header">
-    <h1>  digital transformatrion team members "Dashboard"</h1>
+    <h1>Digital Transformation Analsists Dashboard</h1>
   </header>
   <!-- First full-row box with enter name, gender display, and get countries functionality -->
   <div class="box" id="functionalityBox">
@@ -62,8 +62,8 @@
       const name = document.getElementById('nameInput').value.trim();
       if (!name) return;
       try {
-        // Fetch gender information
-        const genderResponse = await fetch(`https://api.genderize.io/?name=${encodeURIComponent(name)}`);
+        // Fetch gender information from the server
+        const genderResponse = await fetch(`/gender?name=${encodeURIComponent(name)}`);
         const genderData = await genderResponse.json();
         const genderDisplay = document.getElementById('genderDisplay');
         genderDisplay.innerHTML = ''; // clear previous content

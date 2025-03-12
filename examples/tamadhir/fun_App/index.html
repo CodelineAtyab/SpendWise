@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Abtal A Digital</title>
+  <style>
+    body {
+      background-color: #36393f;
+      color: #dcddde;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 20px;
+    }
+    .center-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .box {
+      background-color: #2f3136;
+      border: 1px solid #202225;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      height: 300px; /* fixed height */
+      overflow-y: auto; /* vertical scroll if more content */
+    }
+    /* new styles for gender display in 1st box */
+    #functionalityBox {
+      position: relative;
+    }
+    #genderDisplay {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #202225;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Team name header -->
+  <header class="center-header">
+    <h1>Team Abtal A Digital's "Dashboard"</h1>
+  </header>
+
+  <!-- First full-row box with enter name, gender display, and get countries functionality -->
+  <div class="box" id="functionalityBox">
+    <div id="nameForm">
+      <input type="text" id="nameInput" placeholder="Enter name" />
+      <button id="fetchButton">Who Am I</button>
+    </div>
+    <div id="resultsContainer" style="margin-top:20px; display:flex; flex-wrap: wrap; gap:10px;"></div>
+  </div>
+
+  <script>
+    document.getElementById('fetchButton').addEventListener('click', async () => {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) return;
+
+      try {
+        // Fetch country origin data from API
+        const response = await fetch(`/country_origin?name=${encodeURIComponent(name)}`);
+        const data = await response.json();
+        const container = document.getElementById('resultsContainer');
+        container.innerHTML = ''; // Clear previous results
+
+        data.country.forEach((item, index) => {
+          const box = document.createElement('div');
+          box.style.padding = '10px';
+          box.style.border = '1px solid #dcddde';
+          box.style.borderRadius = '5px';
+          box.style.backgroundColor = '#2f3136';
+          box.style.flex = '1 1 100%';
+          box.style.textAlign = 'center';
+          box.innerHTML = `<strong>${index + 1}</strong><br/><span>${item.country_name}</span>`;
+          container.appendChild(box);
+        });
+
+      } catch (err) {
+        console.error("Error fetching country data:", err);
+      }
+
+      try {
+        // Fetch gender data from API
+        const genderResponse = await fetch(`/gender?name=${encodeURIComponent(name)}`);
+        const genderData = await genderResponse.json();
+
+        // Determine gender image path
+        let genderIcon = "";
+        if (genderData.gender === "male") {
+          genderIcon = "img/4042474.png";  // Male icon
+        } else if (genderData.gender === "female") {
+          genderIcon = "img/5066428.png";  // Female icon
+        }
+
+        // Add gender icon to UI at the top-right of the container
+        let genderDisplay = document.getElementById('genderDisplay');
+        if (!genderDisplay) {
+          genderDisplay = document.createElement('div');
+          genderDisplay.id = 'genderDisplay';
+          document.getElementById('functionalityBox').appendChild(genderDisplay);
+        }
+
+        genderDisplay.innerHTML = genderIcon
+          ? `<img src="${genderIcon}" alt="${genderData.gender}" width="30" height="30">`
+          : "Gender not found";
+
+      } catch (err) {
+        console.error("Error fetching gender:", err);
+      }
+    });
+  </script>
+</body>
+</html>

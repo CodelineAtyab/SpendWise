@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <title>Team Abtal A Digital</title>
   <style>
     body {
@@ -90,14 +91,14 @@
         const genderResponse = await fetch(`/gender?name=${encodeURIComponent(name)}`);
         const genderData = await genderResponse.json();
         
-        // Display gender icon (male/female)
-        const genderDisplay = document.getElementById('genderDisplay');
-        genderDisplay.innerHTML = ''; // clear previous gender
-        if (genderData.gender === 'male') {
-          genderDisplay.innerHTML = `<img id="genderIcon" src="male-icon.png" alt="Male" />`;  // Replace with the actual path to your male icon
-        } else if (genderData.gender === 'female') {
-          genderDisplay.innerHTML = `<img id="genderIcon" src="female-icon.png" alt="Female" />`;  // Replace with the actual path to your female icon
-        }
+// Display gender icon (male/female)
+const genderDisplay = document.getElementById('genderDisplay');
+genderDisplay.innerHTML = ''; // clear previous gender
+if (genderData.gender === 'male') {
+  genderDisplay.innerHTML = `<i class="fa-solid fa-mars-stroke-up" alt="Male"></i>`;  // Corrected icon tag
+} else if (genderData.gender === 'female') {
+  genderDisplay.innerHTML = `<i class="fa-solid fa-venus" alt="Female"></i>`;  // Corrected icon tag
+}
         
       } catch (err) {
         console.error(err);

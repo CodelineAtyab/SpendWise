@@ -15,4 +15,4 @@ def countdown(seconds):
     print("0.0")
     print("Time's up!")
 
-countdown(num)
+ 

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Abtal A Digital's Dashboard</title>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      background-color: #36393f;
+      color: #dcddde;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 20px;
+    }
+    .center-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .box {
+      background-color: #2f3136;
+      border: 1px solid #202225;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      height: 300px; /* fixed height */
+      overflow-y: auto; /* vertical scroll if more content */
+      position: relative; /* for the gender display */
+    }
+    #genderDisplay {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #202225;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    #nameForm {
+      margin-bottom: 20px;
+    }
+    #nameInput {
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+    #fetchButton {
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      background-color: #7289da;
+      color: white;
+      cursor: pointer;
+    }
+    #fetchButton:hover {
+      background-color: #677bc4;
+    }
+    .country-box {
+      padding: 10px;
+      border: 1px solid #dcddde;
+      border-radius: 5px;
+      background-color: #2f3136;
+      flex: 1 1 calc(20% - 10px);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="center-header">
+    <h1>Team Abtal A Digital's Dashboard</h1>
+  </header>
+  <div class="box">
+    <!-- Gender Icon Display -->
+    <div id="genderDisplay"></div>
+    <!-- Name Input Form -->
+    <div id="nameForm">
+      <input type="text" id="nameInput" placeholder="Enter name" />
+      <button id="fetchButton">Who Am I</button>
+    </div>
+    <!-- Container for displaying country origins -->
+    <div id="resultsContainer" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+  </div>
+
+  <script>
+    document.getElementById('fetchButton').addEventListener('click', async () => {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) return;
+
+      try {
+        // Fetch gender info from backend
+        const genderResponse = await fetch(`/gender?name=${encodeURIComponent(name)}`);
+        const genderData = await genderResponse.json();
+        const genderDisplay = document.getElementById('genderDisplay');
+        if (genderData.gender) {
+          if (genderData.gender === "male") {
+            genderDisplay.innerHTML = '<i class="fas fa-male" style="font-size: 50px; color: blue;"></i>';
+          } else if (genderData.gender === "female") {
+            genderDisplay.innerHTML = '<i class="fas fa-female" style="font-size: 50px; color: pink;"></i>';
+          } else {
+            genderDisplay.innerHTML = 'N/A';
+          }
+        } else {
+          genderDisplay.innerHTML = 'N/A';
+        }
+
+        // Fetch country origin info from backend
+        const countryResponse = await fetch(`/country_origin?name=${encodeURIComponent(name)}`);
+        const countryData = await countryResponse.json();
+        const resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.innerHTML = ''; // Clear previous results
+
+        if (countryData.country && countryData.country.length > 0) {
+          countryData.country.forEach((item, index) => {
+            const countryBox = document.createElement('div');
+            countryBox.classList.add('country-box');
+            countryBox.innerHTML = `<strong>#${index + 1}</strong><br/><span>${item.country_name}</span><br/><small>${(item.probability * 100).toFixed(1)}%</small>`;
+            resultsContainer.appendChild(countryBox);
+          });
+        } else {
+          resultsContainer.innerHTML = 'No country data available';
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Abtal A Digital</title>
+  <style>
+    body {
+      background-color: #676952;
+      color: #dcddde;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 20px;
+    }
+    .center-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .box {
+      background-color: #63746c;
+      border: 1px solid #6c7179;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      height: 300px; /* fixed height */
+      overflow-y: auto; /* vertical scroll if more content */
+    }
+    /* new styles for gender display in 1st box */
+    #functionalityBox {
+      position: relative;
+    }
+    #genderDisplay {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #6f7174;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  
+  <header class="center-header">
+    <h1>  digital transformatrion team members "Dashboard"</h1>
+  </header>
+  <!-- First full-row box with enter name, gender display, and get countries functionality -->
+  <div class="box" id="functionalityBox">
+    <div id="nameForm">
+      <input type="text" id="nameInput" placeholder="Enter name" />
+      <button id="fetchButton">Who Am I</button>
+    </div>
+    <div id="resultsContainer" style="margin-top:20px; display:flex; flex-wrap: wrap; gap:10px;"></div>
+    <!-- Gender display container -->
+    <div id="genderDisplay"></div>
+  </div>
+
+  <script>
+    document.getElementById('fetchButton').addEventListener('click', async () => {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) return;
+      try {
+        // Fetch gender information
+        const genderResponse = await fetch(`https://api.genderize.io/?name=${encodeURIComponent(name)}`);
+        const genderData = await genderResponse.json();
+        const genderDisplay = document.getElementById('genderDisplay');
+        genderDisplay.innerHTML = ''; // clear previous content
+
+        // Display gender icon
+        if (genderData.gender) {
+          const genderIcon = document.createElement('span');
+          genderIcon.textContent = genderData.gender === 'male' ? '♂️' : '♀️'; // Unicode characters for male and female
+          genderDisplay.appendChild(genderIcon);
+        } else {
+          genderDisplay.textContent = 'Unknown';
+        }
+
+        // Fetch nationalize information for countries
+        const response = await fetch(`/country_origin?name=${encodeURIComponent(name)}`);
+        const data = await response.json();
+        const container = document.getElementById('resultsContainer');
+        container.innerHTML = ''; // clear previous results
+        data.country.forEach((item, index) => {
+          const box = document.createElement('div');
+          box.style.padding = '10px';
+          box.style.border = '1px solid #dcddde';
+          box.style.borderRadius = '5px';
+          box.style.backgroundColor = '#2f3136';
+          box.style.flex = '1 1 100%';
+          box.style.textAlign = 'center';
+          box.innerHTML = `<strong>${index + 1}</strong><br/><span>${item.country_name}</span>`;
+          container.appendChild(box);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

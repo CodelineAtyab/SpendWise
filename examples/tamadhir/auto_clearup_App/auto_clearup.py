@@ -1,8 +1,8 @@
-import os
-import shutil
-import tarfile
-import logging
-from datetime import datetime, timedelta
+import os #module provides a way of using operating system dependent functionality
+import shutil #module provides functions to copy, move, and delete files and directories
+import tarfile #module makes it possible to read and write tar archives, including those using gzip, bz2 and lzma compression
+import logging #module defines functions and classes which implement a flexible event logging system for applications and libraries
+from datetime import datetime, timedelta #module supplies classes for manipulating dates and times
 
 # Configuration
 BASE_DIR = r"C:/home/user/downloads"

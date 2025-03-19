@@ -4,6 +4,7 @@ import tarfile
 import time
 import logging
 from datetime import datetime
+from fastapi import FastAPI
 
 source_dir = '/home/user/downloads'
 archive_dir = '/home/user/archives'
@@ -30,6 +31,9 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
 )
 
+app = FastAPI()
+
+@app.post("/organize_files")
 def organize_files():
     for file_name in os.listdir(source_dir):
         file_path = os.path.join(source_dir, file_name)
@@ -48,9 +52,10 @@ def organize_files():
             new_file_path = os.path.join(subdir_path, file_name)
             shutil.move(file_path, new_file_path)
             logging.info(f"Moved {file_name} to {subdir_path}")
+    return {"message": "Files organized successfully"}
 
-# Archive the files
-def archive_old_files(days_threshold=7):
+@app.post("/archive_old_files")
+def archive_old_files(days_threshold: int = 7):
     current_time = time.time()
     archive_file_name = f"archived_{get_current_date()}.tar.gz"
     archive_file_path = os.path.join(archive_dir, archive_file_name)
@@ -69,9 +74,10 @@ def archive_old_files(days_threshold=7):
                 logging.info(f"Archived and removed {file_name}")
 
     logging.info(f"Archived files into {archive_file_name}")
+    return {"message": f"Archived files into {archive_file_name}"}
 
-# Delete the files
-def delete_old_archives(days_threshold=30):
+@app.post("/delete_old_archives")
+def delete_old_archives(days_threshold: int = 30):
     current_time = time.time()
 
     for archive_file_name in os.listdir(archive_dir):
@@ -85,13 +91,8 @@ def delete_old_archives(days_threshold=30):
             os.remove(archive_file_path)
             logging.info(f"Deleted old archive {archive_file_name}")
 
-# Main function
-def main():
-    logging.info("Starting auto cleanup process")
-    organize_files()
-    archive_old_files()
-    delete_old_archives()
-    logging.info("Auto cleanup process completed")
+    return {"message": "Old archives deleted successfully"}
 
 if __name__ == "__main__":
-    main()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -5,7 +5,7 @@ import logging
 from datetime import datetime, timedelta
 
 # Configuration
-BASE_DIR = r"C:\Users\codel\Downloads"
+BASE_DIR = r"C:/home/user/downloads"
 ARCHIVE_DIR = os.path.join(BASE_DIR, "archives")
 LOG_FILE = "activity.log"
 DAYS_TO_ARCHIVE = 7

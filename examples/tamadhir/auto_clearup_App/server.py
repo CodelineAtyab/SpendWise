@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify # Import the Flask class from the flask module
+
 from auto_clearup import organize_files, archive_old_files, delete_old_archives
 
 app = Flask(__name__)

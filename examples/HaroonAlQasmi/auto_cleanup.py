@@ -6,6 +6,13 @@ import logging
 import datetime
 import time
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------
+#The way this script works is by taking and input of a folders path and then it will organize it
+#In my linux machine I made it run in a folder called testing in my desktop you can check how it works by inserting files in it and waiting for a minute 
+#-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 def setup_logging():
     log_file = "/var/log/auto_cleanup/activity.log"
     # Ensure the log directory exists

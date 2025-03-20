@@ -5,6 +5,7 @@ import tarfile
 import logging
 import datetime
 import time
+import argparse
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -106,7 +107,11 @@ def delete_old_archives(directory):
 
 def main():
     setup_logging()
-    directory = input("Enter the path to the directory: ").strip()
+    parser = argparse.ArgumentParser(description="Auto cleanup script for organizing, archiving, and deleting old files.")
+    parser.add_argument("directory", help="Path to the directory to be processed")
+    args = parser.parse_args()
+
+    directory = args.directory
     if not os.path.isdir(directory):
         logging.error("Provided path is not a valid directory: %s", directory)
         print("Invalid directory.")

@@ -50,8 +50,8 @@ def organize_files_by_extension():
             shutil.move(file_path, os.path.join(target_path, filename))
             files_moved += 1
 
-    # logging.info(f"Files organized: {files_moved} moved.")
-    # return files_moved
+    logging.info(f"Files organized: {files_moved} moved.")
+    return files_moved
 
     
 
@@ -72,8 +72,8 @@ def archive_old_files():
                     os.remove(file_path)
                     archived_files += 1
 
-    # logging.info(f"Files archived: {archived_files} into {archive_name}.")
-    # return archived_files
+    logging.info(f"Files archived: {archived_files} into {archive_name}.")
+    return archived_files
 
 def delete_old_archives():
     """Delete archives older than DAYS_TO_DELETE_ARCHIVE days."""
@@ -86,12 +86,10 @@ def delete_old_archives():
             os.remove(file_path)
             deleted_archives += 1
 
-    # logging.info(f"Old archives deleted: {deleted_archives}.")
-    # return deleted_archives
+    logging.info(f"Old archives deleted: {deleted_archives}.")
+    return deleted_archives
     
-    logging.info(f"Files organized: {files_moved} moved, {archived_files} archived, {deleted_archives} deleted.")
-    print("Clearup complete. Check logs for details.")
-
+   
 if __name__ == "__main__":
     files_moved = organize_files_by_extension()
     archived_files = archive_old_files()

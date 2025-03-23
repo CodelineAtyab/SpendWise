@@ -5,17 +5,21 @@ import tarfile
 from datetime import datetime
 import logging
 
-# Configure logging to file with timestamps
+# Set the directory to scan for files
+directory = r'/home/hamed/Desktop/codeline'  # Change this path as needed
+
+# Ensure the logging directory exists before configuring logging
+os.makedirs(directory, exist_ok=True)
+
+# Configure logging inside the scan directory
+log_file_path = '/var/log/auto_cleanup/activity.log'
 logging.basicConfig(
-    filename=r'C:\Users\codel\OneDrive\Desktop\test scan\auto_cleanup_activity.log',  # Path to the log file
-    level=logging.INFO,  # Log level (INFO will log all levels of messages like INFO, WARNING, ERROR)
-    format='%(asctime)s - %(levelname)s - %(message)s',  # Log format to include timestamp
+    filename=log_file_path,
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
 )
 
-# Set the directory to scan for files
-directory = r'C:\Users\codel\OneDrive\Desktop\test scan'  # Change this path to the folder you want to scan
-
-# Define subdirectories for different file types
+# Define subdirectories for file organization
 DOCUMENTS_DIR = os.path.join(directory, 'documents')
 IMAGES_DIR = os.path.join(directory, 'images')
 SCRIPTS_DIR = os.path.join(directory, 'scripts')
@@ -23,116 +27,131 @@ ARCHIVE_DIR = os.path.join(directory, 'archives')
 
 # Create subdirectories if they don't exist
 for dir_path in [DOCUMENTS_DIR, IMAGES_DIR, SCRIPTS_DIR, ARCHIVE_DIR]:
-    if not os.path.exists(dir_path):
-        os.makedirs(dir_path)
+    os.makedirs(dir_path, exist_ok=True)
 
-# Define file extensions for each type of file
+# File type categories
 EXTENSIONS = {
     'documents': ['.pdf', '.txt', '.docx', '.doc'],
     'images': ['.jpg', '.png', '.gif', '.jpeg'],
     'scripts': ['.py', '.sh', '.bash', '.pl'],
 }
 
-# Get the current time (for checking file age)
-current_time = time.time()
-
-# Define the number of seconds in 7 days and 30 days
-SEVEN_DAYS_IN_SECONDS = 7 * 24 * 60 * 60  # 7 days in seconds
-THIRTY_DAYS_IN_SECONDS = 30 * 24 * 60 * 60  # 30 days in seconds
+# Time thresholds
+SEVEN_DAYS = 7 * 24 * 60 * 60
+THIRTY_DAYS = 30 * 24 * 60 * 60
 
 
-# Function to move files based on their extension
-def move_files():
-    moved_files = 0
-    archived_files = 0
+def archive_old_files():
+    """Finds and archives files older than 7 days."""
+    current_time = time.time()
     files_to_archive = []
 
-    # Loop through files in the scan directory
     for filename in os.listdir(directory):
         full_path = os.path.join(directory, filename)
 
-        # Skip directories, only handle files
-        if os.path.isdir(full_path):
-            continue
+        if os.path.isfile(full_path) and os.path.getmtime(full_path) < current_time - SEVEN_DAYS:
+            files_to_archive.append(full_path)
 
-        # Get the file extension
-        file_extension = os.path.splitext(filename)[1].lower()
-
-        # Determine the destination subdirectory based on file extension
-        destination_dir = None
-        for category, extensions in EXTENSIONS.items():
-            if file_extension in extensions:
-                destination_dir = globals()[category.upper() + '_DIR']
-                break
-
-        # If a matching category was found, move the file
-        if destination_dir:
-            destination_path = os.path.join(destination_dir, filename)
-            shutil.move(full_path, destination_path)
-            moved_files += 1
-            logging.info(f"Moved: {filename} to {destination_dir}")
-
-        # Archive files older than 7 days
-        if os.path.getmtime(full_path) < current_time - SEVEN_DAYS_IN_SECONDS:
-            files_to_archive.append(full_path)  # Collect file to archive
-
-    # After moving files, archive all collected files
     if files_to_archive:
-        archive_files(files_to_archive)
-        archived_files = len(files_to_archive)
+        archive_name = f"archived_{datetime.now().strftime('%Y%m%d')}.tar.gz"
+        archive_path = os.path.join(ARCHIVE_DIR, archive_name)
 
-    return moved_files, archived_files
+        try:
+            with tarfile.open(archive_path, "w:gz") as archive:
+                for file_path in files_to_archive:
+                    archive.add(file_path, os.path.basename(file_path))  # Add file to archive
+
+            for file_path in files_to_archive:
+                os.remove(file_path)  # Remove after successful archiving
+                logging.info(f"Archived: {os.path.basename(file_path)}")
+
+            logging.info(f"Archived {len(files_to_archive)} files to {archive_path}")
+            return len(files_to_archive)
+
+        except Exception as e:
+            logging.error(f"Error archiving files: {e}")
+            return 0
+    return 0
 
 
-# Function to archive multiple files into one .tar.gz
-def archive_files(files_to_archive):
-    archive_name = f"archived_{datetime.now().strftime('%Y%m%d')}.tar.gz"
-    archive_path = os.path.join(ARCHIVE_DIR, archive_name)
+def move_files():
+    """Organizes files into categorized subdirectories."""
+    moved_files = 0
 
-    with tarfile.open(archive_path, "w:gz") as archive:
-        for file_path in files_to_archive:
-            archive.add(file_path, os.path.basename(file_path))  # Add the file to the archive
-            os.remove(file_path)  # Remove file after archiving
+    for filename in os.listdir(directory):
+        full_path = os.path.join(directory, filename)
 
-    logging.info(f"Archived {len(files_to_archive)} files to {archive_path}")
+        if os.path.isfile(full_path):
+            file_extension = os.path.splitext(filename)[1].lower()
+            destination_dir = None
+
+            for category, extensions in EXTENSIONS.items():
+                if file_extension in extensions:
+                    destination_dir = globals()[category.upper() + '_DIR']
+                    break
+
+            if destination_dir:
+                shutil.move(full_path, os.path.join(destination_dir, filename))
+                moved_files += 1
+                logging.info(f"Moved: {filename} to {destination_dir}")
+
+    return moved_files
 
 
-# Function to delete files older than 30 days in the archive folder
 def delete_old_archived_files():
+    """Deletes archived files older than 30 days."""
+    current_time = time.time()
     deleted_files = 0
-    # Loop through files in the archive folder
+
     for filename in os.listdir(ARCHIVE_DIR):
         full_path = os.path.join(ARCHIVE_DIR, filename)
 
-        # Skip directories, only handle files
-        if os.path.isdir(full_path):
-            continue
-
-        # Check if the file is older than 30 days
-        if os.path.getmtime(full_path) < current_time - THIRTY_DAYS_IN_SECONDS:
-            os.remove(full_path)  # Delete the file
-            deleted_files += 1
-            logging.info(f"Deleted old archive: {filename}")
+        if os.path.isfile(full_path) and os.path.getmtime(full_path) < current_time - THIRTY_DAYS:
+            try:
+                os.remove(full_path)
+                deleted_files += 1
+                logging.info(f"Deleted old archive: {filename}")
+            except Exception as e:
+                logging.error(f"Failed to delete {filename}: {e}")
 
     return deleted_files
 
 
-# Main execution function to log details and call the methods
-def main():
-    # Move and archive files
-    moved_files, archived_files = move_files()
+def list_files():
+    """Lists files in the directory before processing."""
+    print("\n--- Listing Files ---\n")
+    logging.info("Listing files in directory...")
 
-    # Delete old archived files (older than 30 days)
+    for filename in os.listdir(directory):
+        full_path = os.path.join(directory, filename)
+
+        if os.path.isfile(full_path):
+            size = os.path.getsize(full_path)
+            modified_time = datetime.fromtimestamp(os.path.getmtime(full_path)).strftime('%Y-%m-%d %H:%M:%S')
+            print(f"File: {filename} | Size: {size} bytes | Last Modified: {modified_time}")
+            logging.info(f"File Found: {filename} | Size: {size} bytes | Last Modified: {modified_time}")
+
+
+def main():
+    """Executes the script in the correct order."""
+    if not os.path.isdir(directory):
+        logging.error("Invalid directory: %s", directory)
+        print("Invalid directory.")
+        return
+
+    list_files()
+    archived_files = archive_old_files()
+    moved_files = move_files()
     deleted_files = delete_old_archived_files()
+
+    print(f"Total files moved: {moved_files}")
+    print(f"Total files archived: {archived_files}")
+    print(f"Total files deleted from archive: {deleted_files}")
 
     logging.info(f"Total files moved: {moved_files}")
     logging.info(f"Total files archived: {archived_files}")
     logging.info(f"Total files deleted from archive: {deleted_files}")
-    print(f"Total files moved: {moved_files}")
-    print(f"Total files archived: {archived_files}")
-    print(f"Total files deleted and removed from archive: {deleted_files}")
 
 
-# Run the script
 if __name__ == "__main__":
     main()

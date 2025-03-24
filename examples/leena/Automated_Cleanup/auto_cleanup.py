@@ -7,7 +7,7 @@ from datetime import datetime
 import logging
 
 # Set up logging configuration
-log_dir = '/home/leena/Downloads/Auto_cleanup'
+log_dir = '/home/leena/Documents/python_projrct/SpendWise/examples/leena/Automated_Cleanup'
 log_file = os.path.join(log_dir, 'activity.log')
 
 # Create log directory if it doesn't exist
@@ -52,6 +52,7 @@ def organize_files():
                 shutil.move(file_path, os.path.join(directory, 'Text'))
                 logging.info(f"Moved file {file} to Text")
                 files_moved += 1
+                
         except Exception as e:
             logging.error(f"Error organizing file {file}: {e}")
 

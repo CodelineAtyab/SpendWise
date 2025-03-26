@@ -1,5 +1,4 @@
 import hashlib
-import os
 
 # File paths
 CSV_FILE = "./transactions.csv"  
@@ -27,12 +26,15 @@ def load_saved_hash(hash_file):
         with open(hash_file, "r") as f:
             return f.read().strip()
     except FileNotFoundError:
-        return None
+        return None  # Return None if the file does not exist
 
 def verify_file_integrity():
     """Verify the integrity of the CSV file by comparing hashes."""
     current_hash = compute_sha256(CSV_FILE)
     saved_hash = load_saved_hash(HASH_FILE)
+
+    print(f"Computed Hash: {current_hash}")
+    print(f"Saved Hash: {saved_hash}")
 
     if saved_hash is None:
         print("No saved hash found. Assuming file is intact.")
@@ -56,7 +58,10 @@ if __name__ == "__main__":
     verify_file_integrity()
 
     # Simulate a transaction update (modify the CSV file here)
+    with open(CSV_FILE, "a") as f:
+        f.write("2023-10-01, Grocery, -50.00\n")  # Example transaction entry
+
     # After modification, update the hash
-    # update_hash_after_modification()
+    update_hash_after_modification()
 
 

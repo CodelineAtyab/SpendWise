@@ -31,7 +31,7 @@ def load_saved_hash():
 # Check file integrity
 def check_file_integrity():
     if not os.path.exists(csv_file):
-        print(f"🚨 Error: {csv_file} does not exist. Creating a new file...")
+        print(f" Error: {csv_file} does not exist. Creating a new file...")
         create_csv_file()
         return
     
@@ -39,12 +39,12 @@ def check_file_integrity():
     saved_hash = load_saved_hash()
     
     if saved_hash is None:
-        print("📝 No previous hash found. Saving initial hash...")
+        print(" No previous hash found. Saving initial hash...")
         save_hash(current_hash)
     elif saved_hash != current_hash:
-        print("⚠️  Alert: File integrity compromised! The CSV file has been tampered with.")
+        print("  Alert: File integrity compromised! The CSV file has been tampered with.")
     else:
-        print("✅ File integrity verified successfully.")
+        print(" File integrity verified successfully.")
 
 # Function to create a CSV file if it doesn't exist
 def create_csv_file():
@@ -52,7 +52,7 @@ def create_csv_file():
         with open(csv_file, 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(["Date", "Transaction_ID", "Amount", "Description"])  # Adding header
-        print(f"📄 Created {csv_file} with headers.")
+        print(f" Created {csv_file} with headers.")
 
 # Function to add a new transaction
 def modify_transaction():

@@ -1,0 +1,5 @@
+Date,Transaction_ID,Amount,Description
+2025-03-25,TXN12345,100.00,Purchase - Shoes
+2025-03-26,TXN12346,50.00,Grocery Payment
+2025-03-26,TXN12347,200.00,Electronics
+2023-03-26,TXN12348,500.00,Travel

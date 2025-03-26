@@ -37,7 +37,7 @@ def save_encrypted_content(filename, encrypted_content):
         # Save the Base64 encoded content to a file
         with open(filename, 'wb') as file:
             file.write(encoded_content)
-        print(f"Encrypted content saved to {filename}")
+        print(f"Email content Encrypted successfully: saved to {filename} ")
     
     except Exception as e:
         print(f"An error occurred while saving the file: {e}")
@@ -52,8 +52,9 @@ def validate_email(email):
 
 def get_valid_secret_key():
     while True:
+
         # Prompt for the secret key
-        secret_key = input("Enter a 32-byte secret key (or press Enter to generate a new one): ")
+        secret_key = input("3. Enter a 32-byte secret key (or press Enter to generate a new one): ")
 
         if not secret_key:
             # Generate a new secret key if not provided
@@ -69,10 +70,12 @@ def get_valid_secret_key():
             print("The key must be exactly 32 bytes. Please try again.")
 
 def main():
+    print("===============================")
+    print("**** Encrypt Email Content ****")
+    print("===============================")
+    email_content = input("1. Enter the email content to encrypt: ")
     
-    email_content = input("Enter the email content to encrypt: ")
-    
-    email_address = input("Enter the email address to validate: ")
+    email_address = input("2. Enter the email address to validate: ")
 
     # Validate email 
     if not validate_email(email_address):
@@ -83,7 +86,7 @@ def main():
     encrypted_content = encrypt_email_content(email_content, secret_key)
     
     # file path f
-    file_path = r"C:\Users\codel\OneDrive\Desktop\git22\SpendWise\examples\Hamed\encrypted_email.txt"
+    file_path = r"Encrypted_email.txt"
     
     # Save the encrypted 
     save_encrypted_content(file_path, encrypted_content)

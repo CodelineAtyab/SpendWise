@@ -17,10 +17,12 @@ def validate_token(token: str) -> bool:
     """
     Validate the provided JWT token.
     """
+    print(f"Debug: Validating token: {token}")  # Debug logging statement
     try:
         jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return True
     except jwt.ExpiredSignatureError:
+        print("Token has expired.")  # Log the error
         return False
     except jwt.InvalidTokenError:
         return False

@@ -17,6 +17,7 @@ try:
     list_of_transactions = [float(x.strip()) for x in data_store_file.readlines()]
 except Exception:
    print(traceback.format_exc())
+   
 # Action handler for action add-amount
 if sys.argv[1] == "add-amount":
     try:

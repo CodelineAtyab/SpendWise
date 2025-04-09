@@ -15,6 +15,12 @@ def generate_token(request: TokenRequest):
 #This endpoint is used to validate an access token by verifying its authenticity. It uses the GET method.
 @router.get("/token/validate", response_model=TokenValidationResponse)
 def validate_token_endpoint(token: str):
-    valid, username =  verify_token (token)
+    payload = verify_token(token)
+    if payload:
+        valid = payload.get("valid", False)
+        username = payload.get("username")
+    else:
+        valid = False
+        username = None
     return TokenValidationResponse(valid=valid, username=username) if valid else TokenValidationResponse(valid=False)
 

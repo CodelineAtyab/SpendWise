@@ -9,7 +9,7 @@ router = APIRouter()
 def generate_token(request: TokenRequest):
     if not request.username:
         raise HTTPException(status_code=400, detail="Username is required")
-    token = create_access_token(request.username)
+    token = create_access_token({'username': request.username})
     return TokenResponse(token=token)
 
 #This endpoint is used to validate an access token by verifying its authenticity. It uses the GET method.

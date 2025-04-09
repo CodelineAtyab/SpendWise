@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from models.token_models import TokenRequest, TokenResponse, ValidationResponse
-from utils.token_helper import generate_token, validate_token
+from app_utils.token_helper import generate_token, validate_token
 
 router = APIRouter()
 

@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 from fastapi import FastAPI
 from routes.token_routes import router as token_router
 import uvicorn

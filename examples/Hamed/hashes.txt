@@ -1,0 +1,2 @@
+C:\Users\codel\OneDrive\Desktop\git22\SpendWise\examples\Hamed\information_security_area\compute_hash.py,731e0a9006c2dc76b494a33c85db2d114ff017d3a62dbab88dbb713c1d14a022
+C:\Users\codel\OneDrive\Desktop\git22\SpendWise\examples\Hamed\information_security_area\LICENSE_EXAMPLE.txt,2506a78e2fcf8069436fc6a7ff000401cf76f1f5fd1db1c93a86c385cf4cdf0d

@@ -5,8 +5,8 @@ import traceback
 FILE_PATH = "./data/data_store.txt"
 
 if len(sys.argv) < 2:
-  print("Usage: python main_app.py <action> <amount:(Optional in case of read)>")
-  sys.exit(1)
+    print("Usage: python main_app.py <action> <amount:(Optional in case of read)>")
+    sys.exit(1)
 
 # Read the data from the file
 list_of_transactions: list[str] = []
@@ -27,6 +27,6 @@ if sys.argv[1] == "add-amount":
         print("Amount added successfully!")
     except Exception:
       print(traceback.format_exc())
-  
+   
 elif sys.argv[1] == "view-amount":
-  print(list_of_transactions)
+   print(list_of_transactions)

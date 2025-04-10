@@ -20,7 +20,7 @@ data = []
 def get_vowels_count(request: Request):
   vowel_count = 0
 
-  for char in request.query_params.get("sentence"):
+  for char in request.query_params.get("sentence", ""):
     if char.lower() in ["a", "e", "i", "o", "u"]:
       vowel_count += 1
 

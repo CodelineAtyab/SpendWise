@@ -27,6 +27,6 @@ if sys.argv[1] == "add-amount":
         print("Amount added successfully!")
     except Exception:
       print(traceback.format_exc())
-   
-elif sys.argv[1] == "view-amount":
-   print(list_of_transactions)
+    
+elif sys.argv[1] == "view-amount": 
+    print(list_of_transactions)

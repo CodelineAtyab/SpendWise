@@ -135,7 +135,7 @@
       
       document.getElementById("vowelCountResult").innerText = "Analyzing...";
       
-      fetch(`http://localhost:8000/vowels?sentence=${encodeURIComponent(inputText)}`)
+      fetch(`http://${window.location.hostname}:8080/vowels?sentence=${encodeURIComponent(inputText)}`)
         .then(res => res.json())
         .then(jsonRes => {
           console.log(jsonRes);

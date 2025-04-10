@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abtal Digital App Store</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    
+    body {
+      background-color: #fafafa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .header {
+      width: 100%;
+      padding: 20px 0;
+      text-align: center;
+      border-bottom: 1px solid #dbdbdb;
+      margin-bottom: 40px;
+    }
+    
+    .app-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #262626;
+      margin-bottom: 10px;
+    }
+    
+    .app-subtitle {
+      color: #8e8e8e;
+      font-size: 14px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .input-container {
+      display: flex;
+      width: 100%;
+      margin: 20px 0;
+    }
+    
+    #sentenceText {
+      flex: 1;
+      border: 1px solid #dbdbdb;
+      border-radius: 3px 0 0 3px;
+      padding: 12px 15px;
+      font-size: 16px;
+      outline: none;
+    }
+    
+    #submitSentenceButton {
+      background-color: #0095f6;
+      color: white;
+      border: none;
+      border-radius: 0 3px 3px 0;
+      padding: 0 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    #submitSentenceButton:hover {
+      background-color: #0074cc;
+    }
+    
+    .result-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .result-title {
+      color: #8e8e8e;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    
+    #vowelCountResult {
+      font-size: 24px;
+      font-weight: 600;
+      color: #262626;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 class="app-title">Abtal A Digital Application Store</h1>
+    <p class="app-subtitle">Count vowels in your text with our vowel analysis tool</p>
+  </div>
+  
+  <div class="card">
+    <div class="input-container">
+      <input type="text" id="sentenceText" placeholder="Type your sentence here..." />
+      <button id="submitSentenceButton" onclick="submitSentence()">Analyze</button>
+    </div>
+  </div>
+  
+  <div class="result-card">
+    <p class="result-title">ANALYSIS RESULTS</p>
+    <p id="vowelCountResult">Enter a sentence and click Analyze</p>
+  </div>
+
+  <script>
+    function submitSentence() {
+      let inputText = document.getElementById("sentenceText").value;
+      
+      if (!inputText.trim()) {
+        document.getElementById("vowelCountResult").innerText = "Please enter a sentence first";
+        return;
+      }
+      
+      document.getElementById("vowelCountResult").innerText = "Analyzing...";
+      
+      fetch(`http://localhost:8000/vowels?sentence=${encodeURIComponent(inputText)}`)
+        .then(res => res.json())
+        .then(jsonRes => {
+          console.log(jsonRes);
+          document.getElementById("vowelCountResult").innerText = 
+            `There are ${jsonRes.vowel_count} vowels in your sentence`;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById("vowelCountResult").innerText = "Error processing request";
+        });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+& "C:/Program Files/Python313/python.exe" c:/Users/CodeLine/Desktop/example/SpendWise/examples/Ahad/email_encryption/Store_E_content.py

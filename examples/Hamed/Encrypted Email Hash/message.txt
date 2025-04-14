@@ -1,0 +1,12 @@
+Subject: Test Email
+To: user@example.com
+
+Hello,
+
+This is a test email to demonstrate encryption using RSA public/private keys.
+
+Best regards,
+Your Name
+gfafgaegasegaeg
+
+ff
